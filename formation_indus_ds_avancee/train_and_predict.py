@@ -12,6 +12,10 @@ def train_model_with_io(features_path: str, model_registry_folder: str) -> None:
 
     train_model(features, model_registry_folder)
 
+# with mlflow.start_run() as run:
+#     mlflow.sklearn.autolog()
+#     model = ...
+#     model.fit(X, y)
 
 def train_model(features: pd.DataFrame, model_registry_folder: str) -> None:
     target = 'Ba_avg'
@@ -19,6 +23,7 @@ def train_model(features: pd.DataFrame, model_registry_folder: str) -> None:
     y = features[target]
     with mlflow.start_run():
         # insert autolog here ...
+        mlflow.sklearn.autolog()
         model = RandomForestRegressor(n_estimators=1, max_depth=10, n_jobs=1)
         model.fit(X, y)
     time_str = time.strftime('%Y%m%d-%H%M%S')
